@@ -26,7 +26,7 @@ authRouter
 
 authRouter
   .route("/password/:id")
-  .put(validation(updatePasswordVal), auth, updatePassword); // Update Password
+  .patch(validation(updatePasswordVal), auth, updatePassword); // Update Password
 
 authRouter
   .route("/profile/:id")
@@ -38,6 +38,6 @@ authRouter
 
 authRouter
   .route("/reset-password")
-  .post(validation(resetPasswordVal), resetPassword); // Reset Password
+  .patch(validation(resetPasswordVal), resetPassword); // Reset Password
 
 export default authRouter;

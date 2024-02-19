@@ -111,16 +111,17 @@ export const forgetPassword = catchError(async (req, res, next) => {
 export const resetPassword = catchError(async (req, res, next) => {
   let { email, otp, newPassword } = req.body;
   const user = await userModel.findOne({ email });
-  !user && next(new appError("User not found", 404));
+  if (!user)  {return next(new appError("User not found", 404));}
   const { passwordResetOTP } = user;
-  !passwordResetOTP || Date.now() > passwordResetOTP.expiresAt && next(
-    new appError("OTP has expired or is invalid", 400));
+  if (!passwordResetOTP.otp || Date.now() > passwordResetOTP.expiresAt) {
+    return next(new appError("OTP has expired or is invalid", 400));
+  }
   const isOTPValid = bcrypt.compareSync(otp, passwordResetOTP.otp);
-  !isOTPValid && next(new appError("Invalid OTP", 401));
+  if (!isOTPValid) { return next(new appError("Invalid OTP", 401)); }
   newPassword = newPassword = bcrypt.hashSync(newPassword, +process.env.HASH_ROUND);
   user.passwordResetOTP = undefined;
   await userModel.findOneAndUpdate({ email }, { password: newPassword }, { new: true });
-  user && res.status(200).json({ message: "success" });
+  res.status(200).json({ message: "success" });
 });
 
 
