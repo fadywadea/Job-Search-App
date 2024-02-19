@@ -4,7 +4,6 @@ import Joi from "joi";
 
 // Update Account
 export const updateAccVal = Joi.object({
-  id: Joi.string().hex().length(24).required(),
   firstName: Joi.string().alphanum().min(3).max(30),
   lastName: Joi.string().alphanum().min(3).max(30),
   email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } }),

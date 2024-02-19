@@ -54,6 +54,11 @@ const userSchema = new mongoose.Schema({
   passwordResetOTP: {
     otp: String,
     expiresAt: Date
+  },
+  passwordUpdatedAt: {
+    type: Date,
+    default: Date.now(),
+    required: true,
   }
 },
   { timestamps: true }

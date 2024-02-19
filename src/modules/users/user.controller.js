@@ -5,6 +5,7 @@ import { catchError } from "../../middleware/catchError.js";
 import { appError } from "../../utils/appError.js";
 import { generateOTP } from "../../middleware/generateOTP.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // Update Account
 export const updateAccount = catchError(async (req, res, next) => {
@@ -12,34 +13,28 @@ export const updateAccount = catchError(async (req, res, next) => {
   userName = firstName + " " + lastName;
   DOB = year + "-" + month + "-" + day;
   const user = await userModel.findByIdAndUpdate(
-    req.params.id,
+    req.user.userId,
     { email, mobileNumber, recoveryEmail, DOB, lastName, firstName, userName },
     { new: true });
-  !user && next(new appError("No User Found!", 404));
-  user && res.status(200).json({ message: "success" });
+  res.status(200).json({ message: "success" });
 });
-
 
 // Delete Account
 export const deleteAccount = catchError(async (req, res, next) => {
   const user = await userModel.findByIdAndDelete(req.user.userId);
-  !user && next(new appError("Not found.", 404));
-  user && res.status(200).json({ message: "success" });
+  res.status(200).json({ message: "success" });
 });
-
 
 // Get user account data
 export const getUserData = catchError(async (req, res, next) => {
   const user = await userModel.findByIdAndUpdate({ _id: req.user.userId }, { status: "Online" });
-  !user && next(new appError("No User Found!", 404));
-  user && res.status(200).json({
+  res.status(200).json({
     message: "success", user: {
       Name: user.userName, Email: user.email, Birthday: user.DOB,
       RecoveryEmail: user.recoveryEmail, PhoneNumber: user.mobileNumber, Role: user.role, status: user.status
     }
   });
 });
-
 
 // Get profile data for another user
 export const getProfileData = catchError(async (req, res, next) => {
@@ -67,7 +62,6 @@ export const forgetPassword = catchError(async (req, res, next) => {
   user && res.status(200).json({ message: "success", otp });
 });
 
-
 // Reset Password
 export const resetPassword = catchError(async (req, res, next) => {
   let { email, otp, newPassword } = req.body;
@@ -81,10 +75,11 @@ export const resetPassword = catchError(async (req, res, next) => {
   if (!isOTPValid) { return next(new appError("Invalid OTP", 401)); }
   newPassword = newPassword = bcrypt.hashSync(newPassword, +process.env.HASH_ROUND);
   user.passwordResetOTP = undefined;
-  await userModel.findOneAndUpdate({ email }, { password: newPassword }, { new: true });
-  res.status(200).json({ message: "success" });
+  const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_KEY);
+  await user.save();
+  await userModel.findOneAndUpdate({ email }, { password: newPassword, passwordUpdatedAt: Date.now() }, { new: true });
+  res.status(200).json({ message: "success", token });
 });
-
 
 // Get all accounts associated to a specific recovery Email
 export const getRecoveryEmailAccounts = catchError(async (req, res, next) => {

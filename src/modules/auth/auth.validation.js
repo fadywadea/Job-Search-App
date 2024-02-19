@@ -27,7 +27,6 @@ export const signinVal = Joi.object({
 
 // Update password
 export const updatePasswordVal = Joi.object({
-  id: Joi.string().hex().length(24).required(),
   oldPassword: Joi.string().pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/).required(),
   newPassword: Joi.string().pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/).required(),
   reNewPassword: Joi.string().valid(Joi.ref("newPassword")).required(),

@@ -5,19 +5,19 @@ import { deleteAccount, forgetPassword, getProfileData, getRecoveryEmailAccounts
 import { validation } from "../../middleware/validation.js";
 import { forgetPasswordVal, paramsIdVal, recoveryEmailVal, resetPasswordVal, updateAccVal } from "./user.validation.js";
 import { checkEmail } from "../../middleware/checkEmailExist.js";
-import { auth } from "../../middleware/auth.js";
+import { protectedRoutes } from "../auth/auth.controller.js";
 
 const userRouter = express.Router();
 
 userRouter
   .route("/")
-  .get(validation(recoveryEmailVal), getRecoveryEmailAccounts); // Recovery Email Account
-
+  .get(validation(recoveryEmailVal), getRecoveryEmailAccounts) // Recovery Email Account
+  .put(validation(updateAccVal), protectedRoutes, checkEmail, updateAccount) // Update Account
+  .delete(protectedRoutes, deleteAccount) // Delete Account
+  
 userRouter
-  .route("/:id")
-  .put(validation(updateAccVal), auth, checkEmail, updateAccount) // Update Account
-  .delete(validation(paramsIdVal), auth, deleteAccount) // Delete Account
-  .get(validation(paramsIdVal), auth, getUserData); // Get user data
+  .route("/profile")
+  .get(protectedRoutes, getUserData); // Get user data
 
 userRouter
   .route("/profile/:id")
