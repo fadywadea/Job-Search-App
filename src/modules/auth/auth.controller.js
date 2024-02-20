@@ -58,3 +58,10 @@ export const protectedRoutes = catchError(async (req, res, next) => {
   next();
 });
 
+// Authorization
+export const authorization = (...roles) => {
+  return catchError(async (req, res, next) => {
+    !roles.includes(req.user.role) && next(new appError("You don't have permission to perform this action.", 401));
+    roles.includes(req.user.role) && next();
+  });
+};
