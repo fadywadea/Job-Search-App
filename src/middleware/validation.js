@@ -4,8 +4,9 @@ import { appError } from "../utils/appError.js";
 
 export const validation = (schema) => {
   return (req, res, next) => {
+    const pdf  = req.file;
     const { error } = schema.validate(
-      { ...req.body, ...req.params, ...req.query },
+      { pdf, ...req.body, ...req.params, ...req.query },
       { abortEarly: false }
     );
     if (!error) {

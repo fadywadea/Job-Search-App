@@ -1,9 +1,11 @@
 "use strict";
 
+import { applicationModel } from "../../../database/models/applications.model.js";
 import { companyModel } from "../../../database/models/companies.model.js";
 import { jobModel } from "../../../database/models/jobs.model.js";
 import { catchError } from "../../middleware/catchError.js";
 import { appError } from "../../utils/appError.js";
+import { v2 as cloudinary } from "cloudinary";
 
 // Add Job
 export const addJob = catchError(async (req, res, next) => {
@@ -50,7 +52,20 @@ export const getJobsByCompanyName = catchError(async (req, res, next) => {
 // Get all Jobs that match the following filters
 export const jobsFilter = catchError(async (req, res, next) => {
   let filterObject = { ...req.body };
-  const jobs = await jobModel.find(filterObject,'-_id -addedBy -__v');
+  const jobs = await jobModel.find(filterObject, '-_id -addedBy -__v');
   !jobs.length && next(new appError("No matching jobs found", 404));
   jobs.length && res.status(200).json({ message: "success", jobs });
+});
+
+// Apply to jobs
+export const applyToJob = catchError(async (req, res, next) => {
+  const { userTechSkills, userSoftSkills, _id } = req.user;
+  const result = await cloudinary.uploader.upload(req.file.path);
+  const job = await jobModel.findById(req.query._id);
+  if (!job) return next(new appError("Jobs not found", 404));
+  const resume = new applicationModel({
+    userTechSkills, userSoftSkills, userResume: result.secure_url, userId: _id, jobId: job._id,
+  });
+  resume.save();
+  res.status(200).json({ message: "success" });
 });

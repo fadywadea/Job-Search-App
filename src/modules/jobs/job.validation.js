@@ -44,3 +44,18 @@ export const jobsFilterVal = Joi.object({
   jobTitle: Joi.string().min(3).max(30),
   technicalSkills: Joi.array().items(Joi.string()),
 });
+
+// Apply to a Job
+export const applyToJobVal = Joi.object({
+  pdf: Joi.object({
+    fieldname: Joi.string().required(),
+    originalname: Joi.string().required(),
+    encoding: Joi.string().required(),
+    mimetype: Joi.string().valid('application/pdf').required(),
+    size: Joi.number().max(5242880).required(),
+    destination: Joi.string().required(),
+    filename: Joi.string().required(),
+    path: Joi.string().required()
+  }).required(),
+  _id: Joi.string().hex().length(24).required(),
+});

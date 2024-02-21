@@ -18,6 +18,6 @@ const applicationSchema = new mongoose.Schema({
     type: [String],
   },
   userResume: String,
-});
+}, { timestamps: true });
 
 export const applicationModel = mongoose.model('application', applicationSchema);

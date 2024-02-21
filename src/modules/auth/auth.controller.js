@@ -8,10 +8,10 @@ import { appError } from "../../utils/appError.js";
 
 // Sign Up User
 export const signup = catchError(async (req, res, next) => {
-  let { firstName, lastName, userName, email, password, recoveryEmail, DOB, day, month, year, mobileNumber, } = req.body;
+  let { firstName, lastName, userName, email, password, recoveryEmail, DOB, day, month, year, mobileNumber, userSoftSkills, userTechSkills } = req.body;
   userName = firstName + " " + lastName;
   DOB = year + "-" + month + "-" + day;
-  const user = new userModel({ firstName, lastName, userName, email, password, recoveryEmail, DOB, mobileNumber, });
+  const user = new userModel({ firstName, lastName, userName, email, password, recoveryEmail, DOB, mobileNumber, userSoftSkills, userTechSkills });
   await user.save();
   res.status(201).json({ message: "success", user: { name: user.firstName, email: user.email }, });
 });

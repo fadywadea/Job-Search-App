@@ -1,6 +1,5 @@
 "use strict";
 
-// Database Connection Error Handle
 process.on("uncaughtException", (error) => { console.log("Error:", error); });
 
 import express from "express";

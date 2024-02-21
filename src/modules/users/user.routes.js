@@ -10,20 +10,20 @@ import { protectedRoutes } from "../auth/auth.controller.js";
 const userRouter = express.Router();
 
 userRouter.route("/")
-  .get(validation(recoveryEmailVal), getRecoveryEmailAccounts) // Recovery Email Account
-  .put(validation(updateAccVal), protectedRoutes, checkEmail, updateAccount) // Update Account
-  .delete(protectedRoutes, validation(Val),deleteAccount) // Delete Account
+  .get(validation(recoveryEmailVal), getRecoveryEmailAccounts)
+  .put(validation(updateAccVal), protectedRoutes, checkEmail, updateAccount)
+  .delete(protectedRoutes, validation(Val),deleteAccount)
 
 userRouter.route("/profile")
-  .get(protectedRoutes, validation(Val), getUserData); // Get user data
+  .get(protectedRoutes, validation(Val), getUserData);
 
 userRouter.route("/profile/:id")
-  .get(validation(paramsIdVal), getProfileData); // Get profile data for another user
+  .get(validation(paramsIdVal), getProfileData);
 
 userRouter.route("/forget-password")
-  .post(validation(forgetPasswordVal), forgetPassword); // Forget password
+  .post(validation(forgetPasswordVal), forgetPassword);
 
 userRouter.route("/reset-password")
-  .patch(validation(resetPasswordVal), resetPassword); // Reset Password
+  .patch(validation(resetPasswordVal), resetPassword);
 
 export default userRouter;
