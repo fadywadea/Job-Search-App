@@ -21,13 +21,14 @@ export const updateAccount = catchError(async (req, res, next) => {
 
 // Delete Account
 export const deleteAccount = catchError(async (req, res, next) => {
-  const user = await userModel.findByIdAndDelete(req.user.userId);
-  res.status(200).json({ message: "success" });
+  const user = await userModel.findByIdAndDelete(req.user._id);
+  !user && next(new appError("No User Found!", 404));
+  user && res.status(200).json({ message: "success" });
 });
 
 // Get user account data
 export const getUserData = catchError(async (req, res, next) => {
-  const user = await userModel.findByIdAndUpdate({ _id: req.user.userId }, { status: "Online" });
+  const user = await userModel.findByIdAndUpdate({ _id: req.user._id }, { status: "Online" });
   res.status(200).json({
     message: "success", user: {
       Name: user.userName, Email: user.email, Birthday: user.DOB,

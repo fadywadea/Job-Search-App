@@ -40,7 +40,7 @@ export const deleteCompany = catchError(async (req, res, next) => {
 export const getCompanyData = catchError(async (req, res, next) => {
   const company = await companyModel.findById(req.params.id);
   if (!company) return next(new appError("No company found", 404));
-  const jobs = await jobModel.find({ addedBy: company.companyHR });
+  const jobs = await jobModel.find({ addedBy: company._id }).populate('addedBy','companyName -_id');
   res.status(200).json({ message: "success", data: jobs });
 });
 

@@ -19,6 +19,9 @@ export const paramsIdVal = Joi.object({
   id: Joi.string().hex().length(24).required(),
 });
 
+// Rejected any inputs
+export const Val = Joi.object({});
+
 // Forget password
 export const forgetPasswordVal = Joi.object({
   email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } }).required(),

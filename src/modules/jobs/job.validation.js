@@ -29,3 +29,9 @@ export const updateJobVal = Joi.object({
 export const deleteJobVal = Joi.object({
   id: Joi.string().hex().length(24).required(),
 });
+
+// Get All Jobs With Company Info
+export const getAllJobsWithCompanyInfoVal = Joi.object({});
+
+// Get all Jobs for a specific company
+export const getJobsByCompanyNameVal = Joi.object({ companyName: Joi.string().required() });
