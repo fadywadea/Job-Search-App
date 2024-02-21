@@ -34,4 +34,13 @@ export const deleteJobVal = Joi.object({
 export const getAllJobsWithCompanyInfoVal = Joi.object({});
 
 // Get all Jobs for a specific company
-export const getJobsByCompanyNameVal = Joi.object({ companyName: Joi.string().required() });
+export const getJobsByCompanyNameVal = Joi.object({ companyName: Joi.string().min(3).max(30).required(), });
+
+// Get all Jobs that match the following filters
+export const jobsFilterVal = Joi.object({
+  workingTime: Joi.string().valid('part-time', 'full-time'),
+  jobLocation: Joi.string().valid('onsite', 'remotely', 'hybrid'),
+  seniorityLevel: Joi.string().valid('Junior', 'Mid-Level', 'Senior', 'Team-Lead', 'CTO '),
+  jobTitle: Joi.string().min(3).max(30),
+  technicalSkills: Joi.array().items(Joi.string()),
+});

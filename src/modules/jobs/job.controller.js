@@ -46,3 +46,11 @@ export const getJobsByCompanyName = catchError(async (req, res, next) => {
   !jobs.length && next(new appError("Jobs not found", 404));
   jobs.length && res.status(200).json({ message: "success", jobs });
 });
+
+// Get all Jobs that match the following filters
+export const jobsFilter = catchError(async (req, res, next) => {
+  let filterObject = { ...req.body };
+  const jobs = await jobModel.find(filterObject,'-_id -addedBy -__v');
+  !jobs.length && next(new appError("No matching jobs found", 404));
+  jobs.length && res.status(200).json({ message: "success", jobs });
+});
