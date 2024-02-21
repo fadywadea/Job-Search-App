@@ -9,26 +9,21 @@ import { protectedRoutes } from "../auth/auth.controller.js";
 
 const userRouter = express.Router();
 
-userRouter
-  .route("/")
+userRouter.route("/")
   .get(validation(recoveryEmailVal), getRecoveryEmailAccounts) // Recovery Email Account
   .put(validation(updateAccVal), protectedRoutes, checkEmail, updateAccount) // Update Account
   .delete(protectedRoutes, deleteAccount) // Delete Account
-  
-userRouter
-  .route("/profile")
+
+userRouter.route("/profile")
   .get(protectedRoutes, getUserData); // Get user data
 
-userRouter
-  .route("/profile/:id")
+userRouter.route("/profile/:id")
   .get(validation(paramsIdVal), getProfileData); // Get profile data for another user
 
-userRouter
-  .route("/forget-password")
+userRouter.route("/forget-password")
   .post(validation(forgetPasswordVal), forgetPassword); // Forget password
 
-userRouter
-  .route("/reset-password")
+userRouter.route("/reset-password")
   .patch(validation(resetPasswordVal), resetPassword); // Reset Password
 
 export default userRouter;

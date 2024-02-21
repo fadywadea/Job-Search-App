@@ -36,7 +36,7 @@ app.use(express.json());
 // Routes Middlewares
 bootstrap(app);
 
-app.get("/", (req, res) => res.json({ message: "Hello World!" }));
+app.get("/", (req, res) => res.status(200).json({ message: "Hello World!" }));
 
 // Error messages if there are any errors in the routes
 app.use("*", (req, res, next) => { next(new appError(`Not found endPoint: ${req.originalUrl}`, 404)); });

@@ -8,15 +8,13 @@ import { authorization, protectedRoutes } from "../auth/auth.controller.js";
 
 const companyRouter = express.Router();
 
-companyRouter
-  .route("/")
+companyRouter.route("/")
   .post(protectedRoutes, authorization('User'), validation(addCompanyVal), addCompany) // Add company
-  .get(protectedRoutes,authorization('User','Company_HR'), validation(searchCompanyNameVal),searchCompanyName) // Get data of a specific company by name
+  .get(protectedRoutes, authorization('User', 'Company_HR'), validation(searchCompanyNameVal), searchCompanyName) // Get data of a specific company by name
 
-companyRouter
-  .route("/:id")
+companyRouter.route("/:id")
   .put(protectedRoutes, authorization("User"), validation(updateCompanyDataVal), updateCompanyData) // Update company by id
   .delete(protectedRoutes, authorization("User"), validation(paramsIdaVal), deleteCompany) // Delete company
-  .get(protectedRoutes, authorization("User"), validation(paramsIdaVal), getCompanyData)   // Get data of a specific company by id
+  .get(protectedRoutes, authorization("User"), validation(paramsIdaVal), getCompanyData) // Get data of a specific company by id
 
-  export default companyRouter;
+export default companyRouter;

@@ -8,12 +8,10 @@ import { authorization, protectedRoutes } from "../auth/auth.controller.js";
 
 const jobRouter = express.Router();
 
-jobRouter
-  .route("/")
+jobRouter.route("/")
   .post(protectedRoutes, authorization('User'), validation(addJobVal), addJob) // Add Job
 
-jobRouter
-  .route("/:id")
+jobRouter.route("/:id")
   .put(protectedRoutes, authorization('User'), validation(updateJobVal), updateJob) // Update Job
   .delete(protectedRoutes, authorization('User'), validation(deleteJobVal), deleteJob) // Delete Job
 

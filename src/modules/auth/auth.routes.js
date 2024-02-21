@@ -7,14 +7,14 @@ import { protectedRoutes, signin, signup, updatePassword } from "./auth.controll
 import { signinVal, signupVal, updatePasswordVal } from "./auth.validation.js";
 
 const authRouter = express.Router();
-authRouter
-  .route("/")
+
+authRouter.route("/")
   .post(validation(signupVal), checkEmail, signup) // Sign Up User
-authRouter
-  .route("/signin")
+
+  authRouter.route("/signin")
   .post(validation(signinVal), signin); // Signin User
-authRouter
-  .route("/password")
+
+  authRouter.route("/password")
   .patch(validation(updatePasswordVal), protectedRoutes, updatePassword); // Update Password
 
 export default authRouter;
