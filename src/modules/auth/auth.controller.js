@@ -9,15 +9,15 @@ import { appError } from "../../utils/appError.js";
 // Sign Up User
 export const signup = catchError(async (req, res, next) => {
   try {
-    let { firstName, lastName, userName, email, password, recoveryEmail, DOB, day, month, year, mobileNumber, userSoftSkills, userTechSkills } = req.body;
+    let { firstName, lastName, userName, email, password, recoveryEmail, DOB, day, month, year, mobileNumber, userSoftSkills, userTechSkills, role } = req.body;
     userName = firstName + " " + lastName;
     DOB = year + "-" + month + "-" + day;
-    const user = new userModel({ firstName, lastName, userName, email, password, recoveryEmail, DOB, mobileNumber, userSoftSkills, userTechSkills });
+    const user = new userModel({ firstName, lastName, userName, email, password, recoveryEmail, DOB, mobileNumber, userSoftSkills, userTechSkills, role });
     await user.save();
     res.status(201).json({ message: "success", user: { name: user.firstName, email: user.email }, });
   } catch (e) {
     console.log(e);
-    res.status(500).json({ message: `Error in server: ${e}` });
+    res.status(500).json({ error: `Error in server: ${e}` });
   }
 });
 

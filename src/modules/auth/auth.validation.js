@@ -16,6 +16,7 @@ export const signupVal = Joi.object({
   mobileNumber: Joi.string().pattern(/^(011|012|015)[0-9]{8}$/).required(),
   userTechSkills: Joi.array().items(Joi.string().required()).required(),
   userSoftSkills: Joi.array().items(Joi.string().required()).required(),
+  role: Joi.string().valid('User', 'Company_HR'),
 });
 
 // Signin
