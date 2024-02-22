@@ -36,3 +36,8 @@ export const paramsIdaVal = Joi.object({
 export const searchCompanyNameVal = Joi.object({
   companyName: Joi.string().min(3).max(30).required(),
 });
+
+// Get all applications for specific Jobs
+export const getJobApplicationsVal = Joi.object({
+  
+})

@@ -1,5 +1,6 @@
 "use strict";
 
+import { applicationModel } from "../../../database/models/applications.model.js";
 import { companyModel } from "../../../database/models/companies.model.js";
 import { jobModel } from "../../../database/models/jobs.model.js";
 import { catchError } from "../../middleware/catchError.js";
@@ -40,7 +41,7 @@ export const deleteCompany = catchError(async (req, res, next) => {
 export const getCompanyData = catchError(async (req, res, next) => {
   const company = await companyModel.findById(req.params.id);
   if (!company) return next(new appError("No company found", 404));
-  const jobs = await jobModel.find({ addedBy: company._id }).populate('addedBy','companyName -_id');
+  const jobs = await jobModel.find({ addedBy: company._id }).populate('addedBy', 'companyName -_id');
   res.status(200).json({ message: "success", data: jobs });
 });
 
@@ -49,8 +50,22 @@ export const searchCompanyName = catchError(async (req, res, next) => {
   const { companyName } = req.body;
   const company = await companyModel.findOne({ companyName: companyName });
   !company && next(new appError("No company found", 404));
-  company && res.status(200).json({ message: "success", company: { companyName, industry: company.industry,
-    address: company.address, numberOfEmployees: company.numberOfEmployees, companyEmail: company.companyEmail,
-    description: company.description }
+  company && res.status(200).json({
+    message: "success", company: {
+      companyName, industry: company.industry,
+      address: company.address, numberOfEmployees: company.numberOfEmployees, companyEmail: company.companyEmail,
+      description: company.description
+    }
   });
 });
+
+// Get all applications for specific Jobs
+export const getAllApplicationsForJob = catchError(async (req, res, next) => {
+  const company = await companyModel.findOne({ companyHR: req.user._id });
+  if (!company) return next(new appError("No company found", 404));
+  const job = await jobModel.findOne({ addedBy: company._id });
+  if (!job) return next(new appError("No job found", 404));
+  const applications = await applicationModel.find({ jobId: job._id }, '-_id -jobId -userTechSkills -userSoftSkills -createdAt -updatedAt -__v')
+    .populate('userId', '-_id -password -passwordUpdatedAt -createdAt -updatedAt -__v')
+  res.status(200).json({ message: "success", applications });
+})

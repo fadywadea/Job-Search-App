@@ -85,7 +85,7 @@ export const resetPassword = catchError(async (req, res, next) => {
 // Get all accounts associated to a specific recovery Email
 export const getRecoveryEmailAccounts = catchError(async (req, res, next) => {
   const { recoveryEmail } = req.body;
-  const users = await userModel.distinct('email', { recoveryEmail });
+  const users = await userModel.distinct('recoveryEmail', { recoveryEmail });
   !users.length ?
     next(new appError("User not found", 404)) :
     res.status(200).json({ message: "success", users });

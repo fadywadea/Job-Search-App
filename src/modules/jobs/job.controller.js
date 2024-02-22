@@ -62,7 +62,7 @@ export const applyToJob = catchError(async (req, res, next) => {
   const { userTechSkills, userSoftSkills, _id } = req.user;
   const result = await cloudinary.uploader.upload(req.file.path);
   const job = await jobModel.findById(req.query._id);
-  if (!job) return next(new appError("Jobs not found", 404));
+  if (!job) return next(new appError("Job not found", 404));
   const resume = new applicationModel({
     userTechSkills, userSoftSkills, userResume: result.secure_url, userId: _id, jobId: job._id,
   });
