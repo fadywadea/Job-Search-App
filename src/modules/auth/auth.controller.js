@@ -23,7 +23,6 @@ export const signin = catchError(async (req, res, next) => {
   if (user) {
     if (bcrypt.compareSync(password, user.password)) {
       const { firstName, _id, role } = user;
-      await userModel.findByIdAndUpdate(_id, { status: "Online" });
       const token = jwt.sign({ userId: _id, role }, process.env.JWT_KEY);
       return res.status(200).json({ message: `Welcome ${firstName}.`, token });
     } else { next(new appError("Invalid Password.", 401)); }
