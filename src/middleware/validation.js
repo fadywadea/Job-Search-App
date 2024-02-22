@@ -4,13 +4,13 @@ import { appError } from "../utils/appError.js";
 
 export const validation = (schema) => {
   return (req, res, next) => {
-    let pdf = null;
-    if (req.file) pdf = req.file.pdf;
-    if (!pdf) return next();
-    const { error } = schema.validate(
-      { pdf, ...req.body, ...req.params, ...req.query },
-      { abortEarly: false }
-    );
+    let filter = {};
+    if (req.file) {
+      filter = { pdf: req.file, ...req.body, ...req.params, ...req.query }
+    } else {
+      filter = { ...req.body, ...req.params, ...req.query }
+    }
+    const { error } = schema.validate(filter, { abortEarly: false });
     if (!error) {
       next();
     } else {
