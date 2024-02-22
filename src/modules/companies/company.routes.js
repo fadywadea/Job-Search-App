@@ -9,15 +9,15 @@ import { authorization, protectedRoutes } from "../auth/auth.controller.js";
 const companyRouter = express.Router();
 
 companyRouter.route("/")
-  .post(protectedRoutes, authorization('User'), validation(addCompanyVal), addCompany)
+  .post(protectedRoutes, authorization('Company_HR'), validation(addCompanyVal), addCompany)
   .get(protectedRoutes, authorization('User', 'Company_HR'), validation(searchCompanyNameVal), searchCompanyName);
 
   companyRouter.route("/fady")
-  .get(validation(getJobApplicationsVal), protectedRoutes, authorization("User"), getAllApplicationsForJob);
+  .get(validation(getJobApplicationsVal), protectedRoutes, authorization("Company_HR"), getAllApplicationsForJob);
 
 companyRouter.route("/:id")
-  .put(protectedRoutes, authorization("User"), validation(updateCompanyDataVal), updateCompanyData)
-  .delete(protectedRoutes, authorization("User"), validation(paramsIdaVal), deleteCompany)
-  .get(protectedRoutes, authorization("User"), validation(paramsIdaVal), getCompanyData);
+  .put(protectedRoutes, authorization("Company_HR"), validation(updateCompanyDataVal), updateCompanyData)
+  .delete(protectedRoutes, authorization("Company_HR"), validation(paramsIdaVal), deleteCompany)
+  .get(protectedRoutes, authorization("Company_HR"), validation(paramsIdaVal), getCompanyData);
 
 export default companyRouter;

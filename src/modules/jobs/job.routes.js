@@ -10,17 +10,18 @@ import { uploadSingleFile } from "../../services/fileUploads/uploads.js";
 const jobRouter = express.Router();
 
 jobRouter.route("/")
-  .post(protectedRoutes, authorization('User'), validation(addJobVal), addJob)
+  .post(protectedRoutes, authorization('Company_HR'), validation(addJobVal), addJob)
   .get(protectedRoutes, authorization('User', 'Company_HR'), validation(getAllJobsWithCompanyInfoVal),
     getAllJobsWithCompanyInfo);
 
 jobRouter.route("/:id")
-  .put(protectedRoutes, authorization('User'), validation(updateJobVal), updateJob)
-  .delete(protectedRoutes, authorization('User'), validation(deleteJobVal), deleteJob);
+  .put(protectedRoutes, authorization('Company_HR'), validation(updateJobVal), updateJob)
+  .delete(protectedRoutes, authorization('Company_HR'), validation(deleteJobVal), deleteJob);
 
 jobRouter.route("/specific-company")
-  .get(protectedRoutes, validation(getJobsByCompanyNameVal), authorization('User'), getJobsByCompanyName);
-jobRouter.route("/filter")
+  .get(protectedRoutes, validation(getJobsByCompanyNameVal), authorization('User', 'Company_HR'), getJobsByCompanyName);
+
+  jobRouter.route("/filter")
   .get(protectedRoutes, authorization('User', 'Company_HR'), validation(jobsFilterVal), jobsFilter);
 
 jobRouter.route("/apply")
