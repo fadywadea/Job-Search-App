@@ -59,12 +59,6 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
     required: true,
-  },
-  userTechSkills: {
-    type: [String],
-  },
-  userSoftSkills: {
-    type: [String],
   }
 },
   { timestamps: true }
