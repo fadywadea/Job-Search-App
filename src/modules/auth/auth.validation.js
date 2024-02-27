@@ -14,8 +14,6 @@ export const signupVal = Joi.object({
   month: Joi.number().integer().min(1).max(12).required(),
   year: Joi.number().integer().min(1990).max(2010).required(),
   mobileNumber: Joi.string().pattern(/^(011|012|015)[0-9]{8}$/).required(),
-  userTechSkills: Joi.array().items(Joi.string().required()).required(),
-  userSoftSkills: Joi.array().items(Joi.string().required()).required(),
   role: Joi.string().valid('User', 'Company_HR'),
 });
 

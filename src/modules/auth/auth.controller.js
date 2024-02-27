@@ -9,14 +9,13 @@ import { appError } from "../../utils/appError.js";
 // Sign Up User
 export const signup = catchError(async (req, res, next) => {
   try {
-    let { firstName, lastName, userName, email, password, recoveryEmail, DOB, day, month, year, mobileNumber, userSoftSkills, userTechSkills, role } = req.body;
+    let { firstName, lastName, userName, email, password, recoveryEmail, DOB, day, month, year, mobileNumber, role } = req.body;
     userName = firstName + " " + lastName;
     DOB = year + "-" + month + "-" + day;
-    const user = new userModel({ firstName, lastName, userName, email, password, recoveryEmail, DOB, mobileNumber, userSoftSkills, userTechSkills, role });
+    const user = new userModel({ firstName, lastName, userName, email, password, recoveryEmail, DOB, mobileNumber, role });
     await user.save();
     res.status(201).json({ message: "success", user: { name: user.firstName, email: user.email }, });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ error: `Error in server: ${e}` });
   }
 });
@@ -34,7 +33,6 @@ export const signin = catchError(async (req, res, next) => {
       } else { next(new appError("Invalid Password.", 401)); }
     } else { next(new appError("Invalid Email.", 401)); }
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -54,7 +52,6 @@ export const updatePassword = catchError(async (req, res, next) => {
       next(new appError("No User Found!", 404));
     }
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -72,7 +69,6 @@ export const protectedRoutes = catchError(async (req, res, next) => {
     req.user = user;
     next();
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -84,7 +80,6 @@ export const authorization = (...roles) => {
       !roles.includes(req.user.role) && next(new appError("You don't have permission to perform this action.", 401));
       roles.includes(req.user.role) && next();
     } catch (e) {
-      console.log(e);
       res.status(500).json({ message: `Error in server: ${e}` });
     }
   });

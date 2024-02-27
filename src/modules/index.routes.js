@@ -1,5 +1,6 @@
 "use strict";
 
+import applicationRouter from "./applications/application.routes.js";
 import authRouter from "./auth/auth.routes.js";
 import companyRouter from "./companies/company.routes.js";
 import jobRouter from "./jobs/job.routes.js";
@@ -10,4 +11,5 @@ export const bootstrap = (app) => {
   app.use("/api/v1/user", userRouter);
   app.use("/api/v1/company", companyRouter);
   app.use("/api/v1/job", jobRouter);
+  app.use("/api/v1/application", applicationRouter);
 };

@@ -18,7 +18,6 @@ export const addJob = catchError(async (req, res, next) => {
     await job.save();
     res.status(200).json({ message: "success" });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -30,7 +29,6 @@ export const updateJob = catchError(async (req, res, next) => {
     !job && next(new appError("No job found", 404));
     job && res.status(201).json({ message: "success" });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -42,7 +40,6 @@ export const deleteJob = catchError(async (req, res, next) => {
     !job && next(new appError("No job found", 404));
     job && res.status(200).json({ message: "success" });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -53,7 +50,6 @@ export const getAllJobsWithCompanyInfo = catchError(async (req, res) => {
     const jobs = await jobModel.find({}).populate('addedBy', '-_id -companyHR -__v');
     res.status(200).json({ data: jobs });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -69,7 +65,6 @@ export const getJobsByCompanyName = catchError(async (req, res, next) => {
     !jobs.length && next(new appError("Jobs not found", 404));
     jobs.length && res.status(200).json({ message: "success", jobs });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -82,7 +77,6 @@ export const jobsFilter = catchError(async (req, res, next) => {
     !jobs.length && next(new appError("No matching jobs found", 404));
     jobs.length && res.status(200).json({ message: "success", jobs });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -100,7 +94,6 @@ export const applyToJob = catchError(async (req, res, next) => {
     resume.save();
     res.status(200).json({ message: "success" });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });

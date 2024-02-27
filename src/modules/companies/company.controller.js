@@ -19,7 +19,6 @@ export const addCompany = catchError(async (req, res, next) => {
     await company.save();
     res.status(200).json({ message: "success" });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -33,7 +32,6 @@ export const updateCompanyData = catchError(async (req, res, next) => {
     await companyModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).json({ message: "success" });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -47,7 +45,6 @@ export const deleteCompany = catchError(async (req, res, next) => {
     await companyModel.findByIdAndDelete(req.params.id, req.body, { new: true });
     res.status(200).json({ message: "success" });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -60,7 +57,6 @@ export const getCompanyData = catchError(async (req, res, next) => {
     const jobs = await jobModel.find({ addedBy: company._id }).populate('addedBy', 'companyName -_id');
     res.status(200).json({ message: "success", data: jobs });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -79,7 +75,6 @@ export const searchCompanyName = catchError(async (req, res, next) => {
       }
     });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -95,7 +90,6 @@ export const getAllApplicationsForJob = catchError(async (req, res, next) => {
       .populate('userId', '-_id -password -passwordUpdatedAt -createdAt -updatedAt -__v')
     res.status(200).json({ message: "success", applications });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 })

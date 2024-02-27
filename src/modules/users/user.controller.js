@@ -19,7 +19,6 @@ export const updateAccount = catchError(async (req, res, next) => {
       { new: true });
     res.status(200).json({ message: "success" });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -31,7 +30,6 @@ export const deleteAccount = catchError(async (req, res, next) => {
     !user && next(new appError("No User Found!", 404));
     user && res.status(200).json({ message: "success" });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -47,7 +45,6 @@ export const getUserData = catchError(async (req, res, next) => {
       }
     });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -64,7 +61,6 @@ export const getProfileData = catchError(async (req, res, next) => {
       }
     });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -83,7 +79,6 @@ export const forgetPassword = catchError(async (req, res, next) => {
     await user.save();
     user && res.status(200).json({ message: "success", otp });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -107,7 +102,6 @@ export const resetPassword = catchError(async (req, res, next) => {
     await userModel.findOneAndUpdate({ email }, { password: newPassword, passwordUpdatedAt: Date.now() }, { new: true });
     res.status(200).json({ message: "success", token });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
@@ -121,7 +115,6 @@ export const getRecoveryEmailAccounts = catchError(async (req, res, next) => {
       next(new appError("User not found", 404)) :
       res.status(200).json({ message: "success", users });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: `Error in server: ${e}` });
   }
 });
